@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/QSS">
+        <file>Resource/QSS/MacOS.qss</file>
+    </qresource>
+    <qresource prefix="/Pictures">
+        <file>Resource/Pictures/LoginIcon.png</file>
+        <file>Resource/Pictures/DefaultAvatar.jpg</file>
+    </qresource>
+</RCC>
