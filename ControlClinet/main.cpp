@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "login.h"
+#include "registerwindow.h"
+#include "cutavator.h"
 #include <QFile>
 #include <QApplication>
 
@@ -27,8 +29,14 @@ int main(int argc, char *argv[])
     initStyleSheet(a);
 
     // 创建登录窗口显示
-    Login w;
+    // Login w;
+    // w.show();
+
+    RegisterWindow w(nullptr);
     w.show();
+
+    // CutAvator w("C:\\Users\\haibara\\Pictures\\Camera Roll\\IMG_20240221_205217_844.jpg");
+    // w.show();
 
 
     return a.exec();

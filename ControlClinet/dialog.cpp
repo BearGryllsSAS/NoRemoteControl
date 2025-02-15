@@ -32,8 +32,8 @@ Dialog::~Dialog()
 
 void Dialog::setEdit()//设置文本框
 {
-    ui->MessageTextEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//禁用垂直滚动条
-    ui->MessageTextEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//禁用水平滚动条
+    // ui->MessageTextEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//禁用垂直滚动条
+    // ui->MessageTextEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//禁用水平滚动条
     ui->MessageTextEdit->setReadOnly(true);//设置为只读
     ui->MessageTextEdit->setAlignment(Qt::AlignCenter);
 }

@@ -63,6 +63,9 @@ public:
     // 窗口关闭事件
     void closeEvent(QCloseEvent *event);
 
+    // 记住密码
+    void remeberPassword();
+
 public:
     QString saveLoginAvatorPath;    //保存上次登录成功的人的头像 用来初始化界面
 
@@ -77,6 +80,8 @@ public:
     int dotCount = 0;       // 用于更新文本的点计数
 
     QTimer *textUpdateTimer;    // 登录时用于更新按钮文本的计时器
+
+    QTimer *timer;          // 登录时用于更新动态背景的定时器
 
     /*存储
     /  autologin: 是否启用自动登录的布尔值。
@@ -109,6 +114,8 @@ private slots:
 
 
     void on_LoginBtn_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::Login *ui;

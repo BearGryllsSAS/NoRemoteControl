@@ -5,5 +5,9 @@
     <qresource prefix="/Pictures">
         <file>Resource/Pictures/LoginIcon.png</file>
         <file>Resource/Pictures/DefaultAvatar.jpg</file>
+        <file>Resource/Pictures/DefaultAvatarRegister.jpg</file>
+        <file>Resource/Pictures/RegisterBackground.png</file>
+        <file>Resource/Pictures/SelectAvatarBackground.png</file>
+        <file>Resource/Pictures/SelectAvatarIcon.png</file>
     </qresource>
 </RCC>

@@ -104,7 +104,7 @@ void Login::paintEvent(QPaintEvent *event)//绘画渐变背景
 void Login::setTimer()
 {
     // 建立并启动计时器 来更新动态背景
-    QTimer *timer = new QTimer(this);
+    timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Login::updateGradient);
     timer->start(50);
 
@@ -411,6 +411,9 @@ void Login::ifRememberPassword()
 Login::~Login()
 {
     delete ui;
+    delete validator;
+    delete timer;
+    delete cancelTimer;
 }
 
 void Login::on_CloseTheWindowBtn_clicked()
@@ -452,13 +455,13 @@ void Login::dengLuChengGong()//登录成功
     loginFlag = true;
     settings.setValue("lastlogin", ui->AccountLineEdit->text());//记录上次登录账号
     if (ui->RememberPasswordCheckBox->isChecked() && ui->AutoLoginCheckBox->isChecked()) {
-        // remeberPassword();//记住密码
+        remeberPassword();//记住密码
         rememberAvator();//记住头像
         set.setValue("autologin", true);
         set.setValue("autologinuser", ui->AccountLineEdit->text());
         qDebug() << "记住密码和头像了,下次自动登录";
     } else if (ui->RememberPasswordCheckBox->isChecked()) {
-        // remeberPassword();//记住密码
+        remeberPassword();//记住密码
         rememberAvator();//记住头像
         set.setValue("autologin", false);
         set.setValue("autologinuser", "");
@@ -542,3 +545,33 @@ void Login::closeEvent(QCloseEvent *event)//关闭窗口事件
         event->accept();
     }
 }
+
+void Login::remeberPassword()//记住密码
+{
+    settings.beginGroup(ui->AccountLineEdit->text());
+    settings.setValue("qq_num", ui->AccountLineEdit->text());
+    settings.setValue("password", ui->PasswordLineEdit->text());
+    settings.endGroup();
+}
+
+
+void Login::on_pushButton_clicked()
+{
+    tcpConnect();
+    if(ui->LoginBtn->text() != "登录"){
+        on_LoginBtn_clicked();
+    }
+    if (socket.state() != QAbstractSocket::ConnectedState) {
+        Dialog msgBox(this);
+        msgBox.transText("请检查您的网络连接!");
+        msgBox.setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Dialog |Qt::FramelessWindowHint);
+        msgBox.exec();
+        return;
+    }
+    // regis = new RegisterWindow(&socket,this);
+    // connect(this,&Login::sendAvator,regis,&RegisterWindow::sendAva);
+    // connect(this,&Login::zhuCeChengGong,regis,&RegisterWindow::chengGong);
+    // connect(this,&Login::zhuCeShiBai,regis,&RegisterWindow::shiBai);
+    // regis->show();
+}
+
