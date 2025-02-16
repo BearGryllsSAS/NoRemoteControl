@@ -22,16 +22,15 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // 不显示 MainWindow
-    // MainWindow w;
-    // w.show();
-
     // 初始化整个项目的 QSS 样式
     initStyleSheet(a);
 
-    // 创建登录窗口显示
-    Login w;
+    MainWindow w;
     w.show();
+
+    // 创建登录窗口显示
+    // Login w;
+    // w.show();
 
     // RegisterWindow w(nullptr);
     // w.show();
