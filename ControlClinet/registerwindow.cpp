@@ -418,8 +418,8 @@ void LabelRegis::mousePressEvent(QMouseEvent *event)//点击按钮更换头像
         //打开头像编辑器
         CutAvator *cutter = new CutAvator(filename);
         cutter->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::Dialog);
-        connect(cutter,&CutAvator::cutOk,qobject_cast<RegisterWindow*>(this->parentWidget()->parentWidget()),&RegisterWindow::receiveAvator);
-        // connect(cutter,&CutAvator::cutOk,qobject_cast<RegisterWindow*>(this),&RegisterWindow::receiveAvator);
+        // connect(cutter,&CutAvator::cutOk,qobject_cast<RegisterWindow*>(this->parentWidget()->parentWidget()),&RegisterWindow::receiveAvator);
+        connect(cutter,&CutAvator::cutOk,qobject_cast<RegisterWindow*>(this->parentWidget()->parentWidget()->parentWidget()),&RegisterWindow::receiveAvator);
         cutter->exec();
         cutter->deleteLater();
     }
