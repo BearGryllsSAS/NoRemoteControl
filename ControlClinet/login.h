@@ -1,6 +1,8 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
+#include "registerwindow.h"
+#include "findpassword.h"
 #include <QMainWindow>
 #include <QRegularExpressionValidator>
 #include <QTcpSocket>
@@ -95,7 +97,19 @@ public:
     */
     QSettings settings;
 
-
+signals:
+    // 通知子窗口发送头像给服务器
+    void sendAvator();
+    // 通知子窗口注册成功
+    void zhuCeChengGong(QString qqnum);
+    // 通知子窗口注册失败
+    void zhuCeShiBai();
+    // 通知子窗口找回密码
+    void findPass1(const QJsonObject &jsonObj);
+    // 通知子窗口回答问题的结果
+    void findPass2(const QJsonObject &jsonObj);
+    // 通知子窗口找回密码的结果
+    void findPass3(const QJsonObject &jsonObj);
 
 private slots:
     void on_CloseTheWindowBtn_clicked();
@@ -112,10 +126,12 @@ private slots:
     // 读取并解析服务器中发送过来的消息，然后做出响应
     void onReadyRead();
 
-
     void on_LoginBtn_clicked();
 
-    void on_pushButton_clicked();
+    void on_RegisterPushButton_clicked();
+
+
+    void on_ForgetPasswordBtn_clicked();
 
 private:
     Ui::Login *ui;
@@ -125,8 +141,12 @@ private:
     QJsonDocument jsonDoc;
     // 存储从服务器中读取到的数据
     QByteArray jsonData;
-    //是不是正在登录
+    // 是不是正在登录
     bool loginFlag = false;
+    // 注册账号窗口对象
+    RegisterWindow* regis;
+    //找回密码窗口对象
+    FindPassword* finddPassword;
 };
 
 #endif // LOGIN_H

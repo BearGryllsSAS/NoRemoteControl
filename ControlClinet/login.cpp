@@ -328,15 +328,15 @@ void Login::onReadyRead()
         }
         else if (jsonObj["answer"] == "askforavator") {
             qDebug() << "要发送头像了";
-            // emit sendAvator();//发送头像请求
+            emit sendAvator();//发送头像请求
         }
         else if (jsonObj["answer"] == "zhucechenggong") {
             qDebug() << "注册成功了";
-            // emit zhuCeChengGong(jsonObj["qq_number"].toString());
+            emit zhuCeChengGong(jsonObj["qq_number"].toString());
         }
         else if (jsonObj["answer"] == "zhuAccountInfo") {
             qDebug() << "注册失败了";
-            // emit zhuCeShiBai();
+            emit zhuCeShiBai();
         }
         else if (jsonObj["tag"] == "youravator") {
             qDebug() << "要保存登录成功的头像了";
@@ -344,15 +344,15 @@ void Login::onReadyRead()
         }
         else if (jsonObj["tag"] == "findpassword1_answer") {
             qDebug() << "收到找回密码有没有这个账号了";
-            // emit findPass1(jsonObj);
+            emit findPass1(jsonObj);
         }
         else if (jsonObj["tag"] == "findpassword2_answer") {
             qDebug() << "收到回发的密保问题结果了";
-            // emit findPass2(jsonObj);
+            emit findPass2(jsonObj);
         }
         else if (jsonObj["tag"] == "findpassword3_answer") {
             qDebug() << "收到修改密码结果了";
-            // emit findPass3(jsonObj);
+            emit findPass3(jsonObj);
         }
         //清空 jsonData，准备接收下一个数据块
         jsonData.clear();
@@ -555,12 +555,12 @@ void Login::remeberPassword()//记住密码
 }
 
 
-void Login::on_pushButton_clicked()
+void Login::on_RegisterPushButton_clicked()
 {
-    tcpConnect();
     if(ui->LoginBtn->text() != "登录"){
         on_LoginBtn_clicked();
     }
+    tcpConnect();
     if (socket.state() != QAbstractSocket::ConnectedState) {
         Dialog msgBox(this);
         msgBox.transText("请检查您的网络连接!");
@@ -568,10 +568,32 @@ void Login::on_pushButton_clicked()
         msgBox.exec();
         return;
     }
-    // regis = new RegisterWindow(&socket,this);
-    // connect(this,&Login::sendAvator,regis,&RegisterWindow::sendAva);
-    // connect(this,&Login::zhuCeChengGong,regis,&RegisterWindow::chengGong);
-    // connect(this,&Login::zhuCeShiBai,regis,&RegisterWindow::shiBai);
-    // regis->show();
+    regis = new RegisterWindow(&socket,this);
+    connect(this,&Login::sendAvator,regis,&RegisterWindow::sendAva);
+    connect(this,&Login::zhuCeChengGong,regis,&RegisterWindow::chengGong);
+    connect(this,&Login::zhuCeShiBai,regis,&RegisterWindow::shiBai);
+    regis->show();
+}
+
+// 找回密码
+void Login::on_ForgetPasswordBtn_clicked()
+{
+
+    if(ui->LoginBtn->text() != "登录"){
+        on_LoginBtn_clicked();
+    }
+    tcpConnect();
+    if (socket.state() != QAbstractSocket::ConnectedState) {
+        Dialog msgBox(this);
+        msgBox.transText("请检查您的网络连接!");
+        msgBox.setWindowFlags(Qt::WindowStaysOnTopHint | Qt::Dialog |Qt::FramelessWindowHint);
+        msgBox.exec();
+        return;
+    }
+    finddPassword = new FindPassword(&socket,this);
+    connect(this,&Login::findPass1,finddPassword,&FindPassword::findPassword1);
+    connect(this,&Login::findPass2,finddPassword,&FindPassword::findPassword2);
+    connect(this,&Login::findPass3,finddPassword,&FindPassword::findPassword3);
+    finddPassword->show();
 }
 

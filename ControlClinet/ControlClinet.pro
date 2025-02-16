@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     cutavator.cpp \
     dialog.cpp \
+    findpassword.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     cutavator.h \
     dialog.h \
+    findpassword.h \
     login.h \
     mainwindow.h \
     registerwindow.h
@@ -28,6 +30,7 @@ HEADERS += \
 FORMS += \
     cutavator.ui \
     dialog.ui \
+    findpassword.ui \
     login.ui \
     mainwindow.ui \
     registerwindow.ui

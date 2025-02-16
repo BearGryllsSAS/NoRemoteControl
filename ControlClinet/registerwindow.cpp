@@ -398,7 +398,6 @@ void LineRegis::focusOutEvent(QFocusEvent *event)//失去焦点处理事件
             setPlaceholderText("请输入答案");
         }
     }
-    QLineEdit::focusOutEvent(event);
 
     // 调用父类的事件处理函数，确保正常的事件处理
     QLineEdit::focusOutEvent(event);
