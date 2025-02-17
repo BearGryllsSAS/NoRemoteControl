@@ -3,6 +3,8 @@
 #include "registerwindow.h"
 #include "cutavator.h"
 #include "findpassword.h"
+#include "friendmessage.h"
+#include "choicedialog.h"
 #include <QFile>
 #include <QApplication>
 
@@ -18,6 +20,7 @@ void initStyleSheet(QApplication &a)
     a.setStyleSheet(qss);
 }
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -25,12 +28,19 @@ int main(int argc, char *argv[])
     // 初始化整个项目的 QSS 样式
     initStyleSheet(a);
 
-    // MainWindow w;
+    MainWindow w;
+    w.show();
+
+    // ChoiceDialog w;
+    // w.show();
+
+    // FriendInfo s;
+    // FriendMessage w(s, nullptr);
     // w.show();
 
     // 创建登录窗口显示
-    Login w;
-    w.show();
+    // Login w;
+    // w.show();
 
     // RegisterWindow w(nullptr);
     // w.show();

@@ -40,7 +40,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="AvatorLabel">
         <property name="minimumSize">
          <size>
           <width>40</width>
@@ -75,7 +75,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="ChatBtn">
         <property name="minimumSize">
          <size>
           <width>40</width>
@@ -89,7 +89,7 @@
          </size>
         </property>
         <property name="text">
-         <string>PushButton</string>
+         <string>聊天</string>
         </property>
        </widget>
       </item>
@@ -168,7 +168,7 @@
     <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="PageTalkWidget">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -275,7 +275,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_10">
+               <widget class="QPushButton" name="CloseMainWindowBtn">
                 <property name="minimumSize">
                  <size>
                   <width>20</width>
@@ -289,7 +289,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>PushButton</string>
+                 <string>X</string>
                 </property>
                </widget>
               </item>
@@ -403,7 +403,7 @@
          </widget>
         </item>
         <item row="1" column="0" rowspan="4">
-         <widget class="QListView" name="listView_2">
+         <widget class="TalkList" name="TalkListView">
           <property name="minimumSize">
            <size>
             <width>185</width>
@@ -444,7 +444,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="LineSerach" name="LineSearchTextEdit">
             <property name="minimumSize">
              <size>
               <width>140</width>
@@ -566,7 +566,7 @@
          </layout>
         </item>
         <item row="1" column="0">
-         <widget class="QListView" name="listView">
+         <widget class="FriendList" name="FriendsList">
           <property name="minimumSize">
            <size>
             <width>185</width>
@@ -582,7 +582,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QTextEdit" name="textEdit"/>
+         <widget class="CustomTextEdit" name="FriendsShowTextEdit"/>
         </item>
        </layout>
       </widget>
@@ -591,6 +591,28 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FriendList</class>
+   <extends>QListView</extends>
+   <header location="global">mainwindow-else.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CustomTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">mainwindow-else.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LineSerach</class>
+   <extends>QLineEdit</extends>
+   <header location="global">mainwindow-else.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TalkList</class>
+   <extends>QListView</extends>
+   <header location="global">mainwindow-else.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

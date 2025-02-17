@@ -11,5 +11,10 @@
         <file>Resource/Pictures/SelectAvatarIcon.png</file>
         <file>Resource/Pictures/FindPasswordBackground.png</file>
         <file>Resource/Pictures/MainWindowIcon.png</file>
+        <file>Resource/Pictures/DefaultAvatarMainWindow.jpg</file>
+        <file>Resource/Pictures/FriendsShowBackground.jpg</file>
+        <file>Resource/Pictures/FriendMessageIcon.png</file>
+        <file>Resource/Pictures/FrinedsMessageBackground.png</file>
+        <file>Resource/Pictures/ChoiceDialogIcon.png</file>
     </qresource>
 </RCC>
