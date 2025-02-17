@@ -10,5 +10,6 @@
         <file>Resource/Pictures/SelectAvatarBackground.png</file>
         <file>Resource/Pictures/SelectAvatarIcon.png</file>
         <file>Resource/Pictures/FindPasswordBackground.png</file>
+        <file>Resource/Pictures/MainWindowIcon.png</file>
     </qresource>
 </RCC>

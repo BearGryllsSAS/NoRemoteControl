@@ -25,12 +25,12 @@ int main(int argc, char *argv[])
     // 初始化整个项目的 QSS 样式
     initStyleSheet(a);
 
-    MainWindow w;
-    w.show();
+    // MainWindow w;
+    // w.show();
 
     // 创建登录窗口显示
-    // Login w;
-    // w.show();
+    Login w;
+    w.show();
 
     // RegisterWindow w(nullptr);
     // w.show();

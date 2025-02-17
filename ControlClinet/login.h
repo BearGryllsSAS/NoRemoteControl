@@ -68,6 +68,15 @@ public:
     // 记住密码
     void remeberPassword();
 
+    // 拖拽移动窗口位置
+    void mouseMoveEvent(QMouseEvent *event);
+
+    // 重置移动状态
+    void mouseReleaseEvent(QMouseEvent *event);
+
+    // 点击窗口空白让输入框失去焦点 并且判断拖拽窗口
+    void mousePressEvent(QMouseEvent *event);
+
 public:
     QString saveLoginAvatorPath;    //保存上次登录成功的人的头像 用来初始化界面
 
@@ -133,6 +142,10 @@ private slots:
 
     void on_ForgetPasswordBtn_clicked();
 
+    void on_RememberPasswordCheckBox_toggled(bool checked);
+
+    void on_AutoLoginCheckBox_toggled(bool checked);
+
 private:
     Ui::Login *ui;
     // tcp 连接套接字
@@ -145,8 +158,11 @@ private:
     bool loginFlag = false;
     // 注册账号窗口对象
     RegisterWindow* regis;
-    //找回密码窗口对象
+    // 找回密码窗口对象
     FindPassword* finddPassword;
+    // 用于判断是否要拖动窗口
+    int moveFlag = 0;
+    QPoint dragPosition;
 };
 
 #endif // LOGIN_H

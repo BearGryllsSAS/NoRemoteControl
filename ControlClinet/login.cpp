@@ -44,6 +44,37 @@ Login::Login(QWidget *parent)
     ifAutoLogin();
 }
 
+void Login::mouseMoveEvent(QMouseEvent *event)//拖拽移动窗口位置
+{
+    if (event->buttons() & Qt::LeftButton&&this->rect().contains(event->pos()) && moveFlag ==1) {
+        this->move(event->globalPosition().toPoint() - dragPosition);
+        event->accept();
+    }
+}
+
+
+void Login::mouseReleaseEvent(QMouseEvent *event)//重置移动状态
+{
+    moveFlag = 0;
+}
+
+void Login::mousePressEvent(QMouseEvent *event)//点击窗口空白让输入框失去焦点 并且判断拖拽窗口
+{
+    QPoint pos = event->pos();
+    int margin = 30;
+    ui->PasswordLineEdit->clearFocus();
+    ui->AccountLineEdit->clearFocus();
+    if (event->button() == Qt::LeftButton) {
+        dragPosition = event->globalPosition().toPoint() - this->geometry().topLeft();
+        if (pos.x() <= 30 || pos.x() >= width() - 30 ||
+            pos.y() <= 30 || pos.y() >= height() - 30){//如果点击在边缘
+            qDebug() << "点击在边缘";
+            moveFlag = 1;
+        }
+        event->accept();
+    }
+}
+
 // 初始化头像
 void Login::setAvatar()
 {
@@ -595,5 +626,21 @@ void Login::on_ForgetPasswordBtn_clicked()
     connect(this,&Login::findPass2,finddPassword,&FindPassword::findPassword2);
     connect(this,&Login::findPass3,finddPassword,&FindPassword::findPassword3);
     finddPassword->show();
+}
+
+// 记住密码取消勾选时 如果自动登录仍勾选 则取消
+void Login::on_RememberPasswordCheckBox_toggled(bool checked)
+{
+    if (!checked && ui->AutoLoginCheckBox->isChecked()) {
+        ui->AutoLoginCheckBox->setChecked(false);
+    }
+}
+
+// 勾选自动登录自动勾选记住密码
+void Login::on_AutoLoginCheckBox_toggled(bool checked)
+{
+    if(ui->AutoLoginCheckBox->isChecked()) {
+        ui->RememberPasswordCheckBox->setChecked(checked);
+    }
 }
 
