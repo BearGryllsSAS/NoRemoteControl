@@ -8,6 +8,7 @@
 #include <QBuffer>
 #include <QPainterPath>
 #include <QSqlQuery>
+#include <QListWidget>
 
 MainWindow::~MainWindow()
 {
@@ -31,7 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置好友列表模型
     setupFriendList();
 
+    // 设置聊天列表模型
+    setupTalkList();
 
+    // 设置左下角按钮菜单
+    setupMenu();
 }
 
 void MainWindow::initAvatar()//初始化头像
@@ -94,6 +99,204 @@ void MainWindow::setupFriendList()//设置好友列表模型
     //连接信号与槽
     connect(ui->FriendsList->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::onFriendItemCurrentChanged);
+}
+
+void MainWindow::setupTalkList()//设置聊天列表模型
+{
+    //设置列表
+    ui->TalkListView->setViewMode(QListView::ListMode);//设置视图模式为列表模式
+    ui->TalkListView->setSelectionBehavior(QAbstractItemView::SelectRows);//设置选择行为为选择整行
+    ui->TalkListView->setSelectionMode(QAbstractItemView::SingleSelection);//设置选择模式为单选
+    ui->TalkListView->setEditTriggers(QAbstractItemView::NoEditTriggers);//禁止编辑
+    ui->TalkListView->setItemDelegate(new TalkDelegate(this));//设置自定义的委托用于绘制列表项
+    //设置标准模型
+    talkModel = new QStandardItemModel(this);
+    //初始化过滤代理模型
+    talkFilterProxyModel = new TalkFilterProxyModel(this);
+    talkFilterProxyModel->setSourceModel(talkModel);
+    //设置模型到列表视图
+    ui->TalkListView->setModel(talkFilterProxyModel);
+    //连接信号与槽
+    connect(ui->TalkListView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &MainWindow::onTalkItemCurrentChanged);
+}
+
+void MainWindow::setupMenu()//设置左下角按钮菜单
+{
+    //初始化
+    toolMenu = new QMenu(this);
+    toolMenu->setStyleSheet(
+        "QMenu {"
+        "   background-color: rgb(240, 240, 240);"
+        "   border-radius: 3px;"
+        "   border: 0.5px solid rgb(0, 0, 0);"
+        "}"
+        "QMenu::item {"
+        "   padding: 10px;"
+        "   text-align: left;"
+        "}"
+        "QMenu::item:selected {"
+        "   background-color: rgb(200, 200, 200);"
+        "}"
+        "QMenu::item:pressed {"
+        "   background-color: rgb(180, 180, 180);"
+        "}");
+    //添加菜单项
+    QAction *action1 = toolMenu->addAction("修改密码");
+    QAction *action2 = toolMenu->addAction("注销账号");
+    QAction *action3 = toolMenu->addAction("退出账号");
+    // 连接第一个菜单项的修改密码triggered 信号
+    connect(action1, &QAction::triggered, this, [this]() {//修改密码
+        if( changePassFlag == 0){
+            dialogChangePass = new ChangePassword(this);
+            connect(dialogChangePass,&ChangePassword::changePassword1,this,&MainWindow::changePassword1);
+            connect(dialogChangePass,&ChangePassword::changePassword2,this,&MainWindow::changePassword2);
+            connect(this,&MainWindow::changePasswordAnswer1,dialogChangePass,&::ChangePassword::changePasswordAns1);
+            connect(this,&MainWindow::changePasswordAnswer2,dialogChangePass,&::ChangePassword::changePasswordAns2);
+            connect(dialogChangePass, &ChangePassword::customClose, this, [this]() {
+                qDebug()<<"修改密码窗口重置了";
+                changePassFlag = 0;
+                dialogChangePass->disconnect();
+            });
+            dialogChangePass->show();
+            changePassFlag  = 1;
+        }
+        else if(changePassFlag  == 1){
+            dialogChangePass->raise();
+            if (dialogChangePass) {
+                int x = this->x() + (this->width() - dialogChangePass->width()) / 2;
+                int y = this->y() + (this->height() - dialogChangePass->height()) / 2;
+                dialogChangePass->move(x, y);
+            }
+        }
+    });
+    // // 连接第二个菜单项注销的triggered 信号
+    // connect(action2, &QAction::triggered, this, [this]() {//修改密码
+    //     if( logoutFlag == 0){
+    //         logout = new Logout(this);
+    //         connect(logout, &Logout::logout, this, &MainWindow::goLogout);
+    //         connect(this, &MainWindow::logoutAnswer, logout, &Logout::logoutAnswer);
+    //         connect(logout, &Logout::customClose, this, [this]() {
+    //             qDebug()<<"注销窗口重置了";
+    //             logoutFlag = 0;
+    //             logout->disconnect();
+    //         });
+    //         logout->show();
+    //         logoutFlag  = 1;
+    //     }
+    //     else if(logoutFlag  == 1){
+    //         logout->raise();
+    //         if (logout) {
+    //             int x = this->x() + (this->width() - logout->width()) / 2;
+    //             int y = this->y() + (this->height() - logout->height()) / 2;
+    //             logout->move(x, y);
+    //         }
+    //     }
+    // });
+    // // 连接第三个菜单项退出的triggered 信号
+    // connect(action3, &QAction::triggered, this, [this]() {//修改密码
+    //     ChoiceDialog dialog(this);
+    //     dialog.transText("你确定要退出账号吗？");
+    //     dialog.transButText("确定", "取消");
+    //     int result = dialog.exec();
+    //     if(result == QDialog::Accepted){
+    //         close();
+    //     }
+    // });
+    // //连接按钮的 clicked 信号
+    // connect(ui->but_set, &QPushButton::clicked, [=]() {
+    //     //获取按钮的坐标，并将菜单显示在按钮的下方
+    //     QPoint pos = ui->but_set->mapToGlobal(QPoint(0, ui->but_set->height() - toolMenu->height()));
+    //     toolMenu->exec(pos);
+    // });
+}
+
+void MainWindow::changePassword1(const QJsonObject &json)//收到修改密码窗口的信号 发送信息
+{
+    if(!checkSocket()){
+        return;
+    }
+    QJsonDocument jsonDoc(json);
+    QByteArray jsonData = jsonDoc.toJson() + "END";
+    socket->write(jsonData);
+    socket->flush();
+}
+
+void MainWindow::changePassword2(const QJsonObject &json)//收到修改密码窗口的信号 发送最终的信息
+{
+    if(!checkSocket()){
+        return;
+    }
+    if(json["answer"] == "succeed"){
+        this->close();
+    }
+    QJsonDocument jsonDoc(json);
+    QByteArray jsonData = jsonDoc.toJson() + "END";
+    socket->write(jsonData);
+    socket->flush();
+}
+
+void MainWindow::onTalkItemCurrentChanged()//聊天页面项切换项更新消息框视图
+{
+    qDebug()<<"聊天窗口切换了";
+    ui->FriendNameLabel->setText(ui->TalkListView->currentIndex().data(Qt::DisplayRole).toString());
+    ui->InputTextEdit->setEnabled(true);
+    ui->SendPicturesBtn->setEnabled(true);
+    ui->SendFileBtn->setEnabled(true);
+    ui->VoiceChatBtn->setEnabled(true);
+    clearUnread(ui->TalkListView->currentIndex().data(Qt::UserRole + 1).toString());
+    if(!switchPageTo(ui->TalkListView->currentIndex().data(Qt::UserRole + 1).toString())){
+        ui->TalkStackedWidget->setCurrentIndex(0);
+        qDebug()<<"找不到聊天页面";
+        ui->InputTextEdit->setEnabled(false);
+        ui->SendPicturesBtn->setEnabled(false);
+        ui->SendFileBtn->setEnabled(false);
+        ui->VoiceChatBtn->setEnabled(false);
+    }
+}
+
+void MainWindow::clearUnread(const QString& friendId)//清空某人的未读消息并更新左边消息列表视图
+{
+    if(friendId.isEmpty()){
+        return;
+    }
+    QSqlQuery qry(db);
+    qry.prepare("UPDATE talks SET unread = 0 WHERE friend_id = :friend;");
+    qry.bindValue(":friend", friendId);
+    qry.exec();
+    QStandardItem *item = nullptr;
+    //查找对应 friendId 的项
+    for (int row = 0; row < talkModel->rowCount(); ++row) {
+        QStandardItem *itemTmp = talkModel->item(row);
+        if (itemTmp->data(Qt::UserRole + 1).toString() == friendId) {
+            item = itemTmp;
+            break;
+        }
+    }
+    if (!item) {
+        return;
+    }
+    item->setData(0, Qt::UserRole + 10);
+}
+
+bool MainWindow::switchPageTo(const QString &friendId)//将聊天页面切换到账号为account的页面
+{
+    if(friendId.isEmpty() || !ui->TalkListView->currentIndex().isValid()){
+        return false;
+    }
+    QWidget *targetPage = ui->TalkStackedWidget->findChild<QWidget*>(friendId);
+    if (targetPage) {
+        int index = ui->TalkStackedWidget->indexOf(targetPage);
+        ui->TalkStackedWidget->setCurrentIndex(index);
+        QListWidget *list = targetPage->findChild<QListWidget *>();
+        list->scrollToBottom();
+        qDebug()<<"已经有这个聊天窗口了";
+        return true;
+    }
+    if(friendHash.find((friendId)) == friendHash.end()){//没有这个好友
+        qDebug()<<"没有这个好友";
+        return false;
+    }
 }
 
 void MainWindow::onFriendItemCurrentChanged()//好友列表页面项切换项更新右边视图

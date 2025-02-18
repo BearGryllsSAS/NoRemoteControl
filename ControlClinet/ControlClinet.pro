@@ -13,6 +13,7 @@ CONFIG += c++17
 
 SOURCES += \
     autocleartextedit.cpp \
+    changepassword.cpp \
     choicedialog.cpp \
     cutavator.cpp \
     dialog.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
     autocleartextedit.h \
+    changepassword.h \
     choicedialog.h \
     cutavator.h \
     dialog.h \
@@ -37,6 +39,7 @@ HEADERS += \
     registerwindow.h
 
 FORMS += \
+    changepassword.ui \
     choicedialog.ui \
     cutavator.ui \
     dialog.ui \

@@ -168,12 +168,12 @@
     <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="PageTalkWidget">
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="1">
-         <widget class="QStackedWidget" name="stackedWidget_2">
+         <widget class="TalkStacked" name="TalkStackedWidget">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -198,7 +198,7 @@
         <item row="0" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="FriendNameLabel">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -212,7 +212,7 @@
              </size>
             </property>
             <property name="text">
-             <string>TextLabel</string>
+             <string>联系人</string>
             </property>
            </widget>
           </item>
@@ -302,21 +302,21 @@
         <item row="2" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_7">
           <item>
-           <widget class="QPushButton" name="pushButton_15">
+           <widget class="QPushButton" name="SendPicturesBtn">
             <property name="text">
              <string>发送图片</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_16">
+           <widget class="QPushButton" name="SendFileBtn">
             <property name="text">
              <string>发送文件</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_14">
+           <widget class="QPushButton" name="VoiceChatBtn">
             <property name="text">
              <string>语音聊天</string>
             </property>
@@ -325,7 +325,7 @@
          </layout>
         </item>
         <item row="3" column="1">
-         <widget class="QTextEdit" name="textEdit_2">
+         <widget class="EnterTextEdit" name="InputTextEdit">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -611,6 +611,17 @@
    <class>TalkList</class>
    <extends>QListView</extends>
    <header location="global">mainwindow-else.h</header>
+  </customwidget>
+  <customwidget>
+   <class>EnterTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header location="global">mainwindow-else.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TalkStacked</class>
+   <extends>QStackedWidget</extends>
+   <header location="global">mainwindow-else.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

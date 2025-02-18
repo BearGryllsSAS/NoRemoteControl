@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "mainwindow-else.h"
+#include "changepassword.h"
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include <QVBoxLayout>
@@ -10,6 +11,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSqlDatabase>
+#include <QMenu>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,6 +46,9 @@ public:
     // 设置好友列表模型
     void setupFriendList();
 
+    // 设置聊天列表模型
+    void setupTalkList();
+
     // 清理右边好友信息视图
     void clearEditShow2();
 
@@ -71,6 +76,15 @@ public:
     // 打开某个人的聊天框
     int selectSomeoneInTalkList(const QString &account);
 
+    // 清空某人的未读消息并更新左边消息列表视图
+    void clearUnread(const QString& friendId);
+
+    // 将聊天页面切换到账号为account的页面
+    bool switchPageTo(const QString &friendId);
+
+    // 设置左下角按钮菜单
+    void setupMenu();
+
 private slots:
     void on_CloseMainWindowBtn_clicked();
     // 好友列表页面项切换项更新右边视图
@@ -79,6 +93,12 @@ private slots:
     void updateEditShow2New();
     // 更新右边好友信息视图
     void updateEditShow2Normal(const QModelIndex &index);
+    // 聊天页面项切换项更新消息框视图
+    void onTalkItemCurrentChanged();
+    // 收到修改密码窗口的信号 发送信息
+    void changePassword1(const QJsonObject &json);
+    // 收到修改密码窗口的信号 发送最终的信息
+    void changePassword2(const QJsonObject &json);
 
 private:
     Ui::MainWindow *ui;
@@ -112,5 +132,17 @@ private:
     // 聊天列表筛选模型
     TalkFilterProxyModel *talkFilterProxyModel;
 
+    // 左下角菜单栏
+    QMenu *toolMenu;
+
+    // 是否已经打开修改密码窗体了
+    int changePassFlag = 0;
+
+    // 修改密码窗口
+    ChangePassword *dialogChangePass;
+
+signals:
+    void changePasswordAnswer1(const QJsonObject& json);//修改账号密码第一个申请的结果
+    void changePasswordAnswer2(const QJsonObject& json);//修改账号密码第一个申请的结果
 };
 #endif // MAINWINDOW_H

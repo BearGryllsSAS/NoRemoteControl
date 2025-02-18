@@ -16,5 +16,8 @@
         <file>Resource/Pictures/FriendMessageIcon.png</file>
         <file>Resource/Pictures/FrinedsMessageBackground.png</file>
         <file>Resource/Pictures/ChoiceDialogIcon.png</file>
+        <file>Resource/Pictures/TalkStackWidgetBackground.jpg</file>
+        <file>Resource/Pictures/ChangePasswordIcon.png</file>
+        <file>Resource/Pictures/ChangePasswordBackground.png</file>
     </qresource>
 </RCC>

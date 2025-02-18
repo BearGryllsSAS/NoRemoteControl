@@ -12,6 +12,7 @@
 #include <QTextEdit>
 #include <QLabel>
 #include <QLineEdit>
+#include <QStackedWidget>
 
 // 好友列表类
 class FriendList : public QListView
@@ -109,6 +110,41 @@ protected:
 
 signals:
     void choiceDone(const QJsonObject &json);
+};
+
+class TalkDelegate : public QStyledItemDelegate//聊天列表委托绘图类
+{
+    Q_OBJECT
+public:
+    TalkDelegate(QObject *parent = nullptr) : QStyledItemDelegate(parent) {}
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;//聊天列表项委托绘图
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;//返回尺寸
+    QPixmap getRoundedPixmap(QPixmap srcPixmap, const int radius)const;//获得圆角图片
+    QString displayTimeComparison(const QString &timestampStr)const;//解析时间戳
+};
+
+class EnterTextEdit : public QTextEdit {
+    Q_OBJECT
+
+public:
+    EnterTextEdit(QWidget *parent = nullptr) : QTextEdit(parent) {}
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override;//按下判断是不是回车加ctrl
+
+signals:
+    void enterKey();//回车和ctrl键被按下
+};
+
+class TalkStacked : public QStackedWidget//显示聊天信息的类
+{
+public:
+    TalkStacked(QWidget *parent = nullptr): QStackedWidget(parent), background(":/Pictures/Resource/Pictures/TalkStackWidgetBackground.jpg"){};
+    QPixmap background;//背景图
+
+protected:
+    void paintEvent(QPaintEvent *event);//右边edit的背景
+
 };
 
 

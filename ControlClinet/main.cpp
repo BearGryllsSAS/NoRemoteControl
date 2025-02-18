@@ -5,6 +5,7 @@
 #include "findpassword.h"
 #include "friendmessage.h"
 #include "choicedialog.h"
+#include "changepassword.h"
 #include <QFile>
 #include <QApplication>
 
@@ -28,8 +29,11 @@ int main(int argc, char *argv[])
     // 初始化整个项目的 QSS 样式
     initStyleSheet(a);
 
-    MainWindow w;
+    ChangePassword w;
     w.show();
+
+    // MainWindow w;
+    // w.show();
 
     // ChoiceDialog w;
     // w.show();
